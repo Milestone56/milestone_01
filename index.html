@@ -14,23 +14,33 @@
         }
         
         :root {
-            --primary-color: #a277ff;
-            --secondary-color: #6c40c9;
-            --bg-color: #0d0d12;
-            --card-bg: rgba(26, 22, 48, 0.7);
-            --text-color: #e6e6e6;
-            --text-secondary: #b3b3cc;
+            --primary-color-dark: #a277ff;
+            --secondary-color-dark: #6c40c9;
+            --bg-color-dark: #0d0d12;
+            --card-bg-dark: rgba(26, 22, 48, 0.7);
+            --text-color-dark: #e6e6e6;
+            --text-secondary-dark: #b3b3cc;
+            --card-border-dark: 1px solid rgba(162, 119, 255, 0.2);
+            
+            --primary-color-light: #6c40c9;
+            --secondary-color-light: #4d267e;
+            --bg-color-light: #f5f5f7;
+            --card-bg-light: rgba(255, 255, 255, 0.8);
+            --text-color-light: #33334c;
+            --text-secondary-light: #55556e;
+            --card-border-light: 1px solid rgba(108, 64, 201, 0.3);
+            
             --blur-intensity: 10px;
-            --card-border: 1px solid rgba(162, 119, 255, 0.2);
         }
         
         body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
+            background-color: var(--bg-color-dark);
+            color: var(--text-color-dark);
             min-height: 100vh;
             overflow-x: hidden;
             display: flex;
             flex-direction: column;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
         
         .background-container {
@@ -48,6 +58,7 @@
             height: 100%;
             object-fit: cover;
             opacity: 0.35;
+            transition: opacity 0.5s ease;
         }
         
         .overlay {
@@ -58,6 +69,11 @@
             height: 100%;
             background: linear-gradient(to bottom, rgba(13, 13, 18, 0.8), rgba(44, 16, 64, 0.7));
             backdrop-filter: blur(var(--blur-intensity));
+            transition: backdrop-filter 0.3s ease;
+        }
+        
+        .light-theme .overlay {
+            background: linear-gradient(to bottom, rgba(245, 245, 247, 0.8), rgba(200, 180, 240, 0.7));
         }
         
         .container {
@@ -72,11 +88,12 @@
             text-align: center;
             margin-bottom: 2.5rem;
             padding-top: 1.5rem;
+            animation: fadeIn 1s ease-out;
         }
         
         .author {
             font-size: 0.9rem;
-            color: var(--primary-color);
+            color: var(--primary-color-dark);
             margin-bottom: 0.5rem;
             letter-spacing: 2px;
             text-transform: uppercase;
@@ -94,17 +111,18 @@
             max-width: 600px;
             margin: 0 auto;
             line-height: 1.6;
-            color: var(--text-secondary);
+            color: var(--text-secondary-dark);
         }
         
         .search-section {
-            background: var(--card-bg);
+            background: var(--card-bg-dark);
             backdrop-filter: blur(var(--blur-intensity));
             border-radius: 16px;
             padding: 2rem;
             margin-bottom: 2.5rem;
             box-shadow: 0 8px 32px rgba(13, 13, 18, 0.5);
-            border: var(--card-border);
+            border: var(--card-border-dark);
+            animation: slideUp 1s ease-out;
         }
         
         .search-header {
@@ -116,7 +134,7 @@
         
         .search-title {
             font-size: 1.5rem;
-            color: var(--primary-color);
+            color: var(--primary-color-dark);
         }
         
         .engine-selector {
@@ -124,7 +142,7 @@
             background: rgba(13, 13, 18, 0.5);
             border-radius: 12px;
             padding: 0.25rem;
-            border: var(--card-border);
+            border: var(--card-border-dark);
         }
         
         .engine-btn {
@@ -132,7 +150,7 @@
             border-radius: 8px;
             border: none;
             background: none;
-            color: var(--text-secondary);
+            color: var(--text-secondary-dark);
             cursor: pointer;
             font-size: 0.9rem;
             transition: all 0.3s ease;
@@ -140,7 +158,7 @@
         
         .engine-btn.active {
             background: rgba(162, 119, 255, 0.2);
-            color: var(--primary-color);
+            color: var(--primary-color-dark);
         }
         
         .search-box {
@@ -155,27 +173,29 @@
             border: 2px solid rgba(162, 119, 255, 0.3);
             border-right: none;
             border-radius: 12px 0 0 12px;
-            color: var(--text-color);
+            color: var(--text-color-dark);
             font-size: 1rem;
+            transition: all 0.3s ease;
         }
         
         .search-input:focus {
             outline: none;
-            border-color: var(--primary-color);
+            border-color: var(--primary-color-dark);
         }
         
         .search-btn {
             width: 60px;
-            background: var(--primary-color);
+            background: var(--primary-color-dark);
             border: none;
             border-radius: 0 12px 12px 0;
             color: white;
             font-size: 1.2rem;
             cursor: pointer;
+            transition: all 0.3s ease;
         }
         
         .search-btn:hover {
-            background: var(--secondary-color);
+            background: var(--secondary-color-dark);
         }
         
         .links-section {
@@ -183,15 +203,16 @@
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 1.5rem;
             margin-bottom: 2.5rem;
+            animation: slideUp 1.2s ease-out;
         }
         
         .link-card {
-            background: var(--card-bg);
+            background: var(--card-bg-dark);
             backdrop-filter: blur(var(--blur-intensity));
             border-radius: 16px;
             padding: 1.5rem;
-            transition: transform 0.3s ease;
-            border: var(--card-border);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: var(--card-border-dark);
             display: flex;
             flex-direction: column;
             height: 100%;
@@ -199,11 +220,13 @@
         
         .link-card:hover {
             transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(13, 13, 18, 0.6);
+            border-color: rgba(162, 119, 255, 0.4);
         }
         
         .link-icon {
             font-size: 1.8rem;
-            color: var(--primary-color);
+            color: var(--primary-color-dark);
             margin-bottom: 1rem;
         }
         
@@ -214,7 +237,7 @@
         }
         
         .link-desc {
-            color: var(--text-secondary);
+            color: var(--text-secondary-dark);
             margin-bottom: 1.2rem;
             line-height: 1.5;
             flex-grow: 1;
@@ -222,21 +245,23 @@
         
         .link-url {
             display: inline-block;
-            color: var(--primary-color);
+            color: var(--primary-color-dark);
             text-decoration: none;
             font-weight: 500;
+            transition: color 0.3s ease;
         }
         
         .link-url:hover {
-            color: var(--secondary-color);
+            color: var(--secondary-color-dark);
         }
         
         footer {
             text-align: center;
             margin-top: auto;
             padding: 1.5rem;
-            color: var(--text-secondary);
+            color: var(--text-secondary-dark);
             font-size: 0.9rem;
+            animation: fadeIn 1.5s ease-out;
         }
         
         .theme-switcher {
@@ -246,35 +271,22 @@
             width: 50px;
             height: 50px;
             border-radius: 50%;
-            background: var(--card-bg);
+            background: var(--card-bg-dark);
             backdrop-filter: blur(var(--blur-intensity));
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            border: var(--card-border);
-            color: var(--primary-color);
+            border: var(--card-border-dark);
+            color: var(--primary-color-dark);
             font-size: 1.2rem;
+            transition: all 0.3s ease;
             z-index: 100;
         }
         
-        .settings-btn {
-            position: fixed;
-            bottom: 2rem;
-            right: 5.5rem;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: var(--card-bg);
-            backdrop-filter: blur(var(--blur-intensity));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            border: var(--card-border);
-            color: var(--primary-color);
-            font-size: 1.2rem;
-            z-index: 100;
+        .theme-switcher:hover {
+            transform: rotate(30deg);
+            border-color: rgba(162, 119, 255, 0.4);
         }
         
         .video-controls {
@@ -290,15 +302,21 @@
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            background: var(--card-bg);
+            background: var(--card-bg-dark);
             backdrop-filter: blur(var(--blur-intensity));
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            border: var(--card-border);
-            color: var(--primary-color);
+            border: var(--card-border-dark);
+            color: var(--primary-color-dark);
             font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .control-btn:hover {
+            background: rgba(162, 119, 255, 0.2);
+            transform: scale(1.1);
         }
         
         .upload-btn {
@@ -308,36 +326,68 @@
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            background: var(--card-bg);
+            background: var(--card-bg-dark);
             backdrop-filter: blur(var(--blur-intensity));
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            border: var(--card-border);
-            color: var(--primary-color);
+            border: var(--card-border-dark);
+            color: var(--primary-color-dark);
             font-size: 1rem;
+            transition: all 0.3s ease;
             z-index: 100;
+        }
+        
+        .upload-btn:hover {
+            background: rgba(162, 119, 255, 0.2);
+            transform: scale(1.1);
+        }
+        
+        .settings-btn {
+            position: fixed;
+            bottom: 2rem;
+            right: 5.5rem;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--card-bg-dark);
+            backdrop-filter: blur(var(--blur-intensity));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: var(--card-border-dark);
+            color: var(--primary-color-dark);
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+        
+        .settings-btn:hover {
+            transform: rotate(30deg);
+            border-color: rgba(162, 119, 255, 0.4);
         }
         
         #video-upload {
             display: none;
         }
         
+        /* 设置面板 */
         .settings-panel {
             position: fixed;
             top: 0;
             right: -400px;
             width: 380px;
             height: 100vh;
-            background: var(--card-bg);
+            background: var(--card-bg-dark);
             backdrop-filter: blur(20px);
             z-index: 1000;
             padding: 2rem;
             overflow-y: auto;
             transition: right 0.4s ease;
             box-shadow: -5px 0 25px rgba(0, 0, 0, 0.3);
-            border-left: var(--card-border);
+            border-left: var(--card-border-dark);
         }
         
         .settings-panel.active {
@@ -355,15 +405,20 @@
         
         .settings-title {
             font-size: 1.5rem;
-            color: var(--primary-color);
+            color: var(--primary-color-dark);
         }
         
         .close-settings {
             background: none;
             border: none;
-            color: var(--text-secondary);
+            color: var(--text-secondary-dark);
             font-size: 1.5rem;
             cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        
+        .close-settings:hover {
+            color: var(--primary-color-dark);
         }
         
         .settings-group {
@@ -373,8 +428,29 @@
         .settings-label {
             display: block;
             margin-bottom: 0.8rem;
-            color: var(--primary-color);
+            color: var(--primary-color-dark);
             font-weight: 500;
+        }
+        
+        .theme-tabs {
+            display: flex;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid rgba(162, 119, 255, 0.2);
+        }
+        
+        .theme-tab {
+            padding: 0.5rem 1rem;
+            background: none;
+            border: none;
+            color: var(--text-secondary-dark);
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .theme-tab.active {
+            color: var(--primary-color-dark);
+            border-bottom: 2px solid var(--primary-color-dark);
         }
         
         .color-picker {
@@ -390,6 +466,7 @@
             border-radius: 50%;
             cursor: pointer;
             border: 2px solid transparent;
+            transition: transform 0.3s ease;
         }
         
         .color-option.active {
@@ -416,13 +493,13 @@
             width: 18px;
             height: 18px;
             border-radius: 50%;
-            background: var(--primary-color);
+            background: var(--primary-color-dark);
             cursor: pointer;
         }
         
         .slider-value {
             text-align: right;
-            color: var(--text-secondary);
+            color: var(--text-secondary-dark);
             font-size: 0.9rem;
         }
         
@@ -443,23 +520,37 @@
             border-radius: 8px;
             border: 1px solid rgba(162, 119, 255, 0.3);
             background: rgba(13, 13, 18, 0.5);
-            color: var(--text-color);
+            color: var(--text-color-dark);
             font-size: 0.9rem;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-color-dark);
         }
         
         .btn {
             padding: 0.7rem 1.5rem;
             border-radius: 8px;
             border: none;
-            background: var(--primary-color);
+            background: var(--primary-color-dark);
             color: white;
             font-weight: 500;
             cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        
+        .btn:hover {
+            background: var(--secondary-color-dark);
         }
         
         .btn-secondary {
             background: rgba(162, 119, 255, 0.2);
-            color: var(--primary-color);
+            color: var(--primary-color-dark);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(162, 119, 255, 0.3);
         }
         
         .custom-links {
@@ -489,30 +580,33 @@
         .link-action {
             background: none;
             border: none;
-            color: var(--text-secondary);
+            color: var(--text-secondary-dark);
             cursor: pointer;
             font-size: 0.9rem;
         }
         
-        .toast {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--card-bg);
-            color: var(--primary-color);
-            padding: 10px 20px;
-            border-radius: 8px;
-            backdrop-filter: blur(var(--blur-intensity));
-            border: var(--card-border);
-            z-index: 1000;
-            opacity: 0;
+        .link-action:hover {
+            color: var(--primary-color-dark);
         }
         
-        .toast.show {
-            opacity: 1;
+        /* 动画效果 */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
         
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* 响应式设计 */
         @media (max-width: 768px) {
             .container {
                 padding: 1.5rem;
@@ -562,11 +656,150 @@
                 right: -100%;
             }
         }
+        
+        /* 明亮主题 */
+        .light-theme {
+            background-color: var(--bg-color-light);
+            color: var(--text-color-light);
+        }
+        
+        .light-theme .author,
+        .light-theme .search-title,
+        .light-theme .link-icon,
+        .light-theme .link-url,
+        .light-theme .settings-title,
+        .light-theme .settings-label,
+        .light-theme .close-settings:hover,
+        .light-theme .link-action:hover {
+            color: var(--primary-color-light);
+        }
+        
+        .light-theme .description,
+        .light-theme .link-desc,
+        .light-theme footer,
+        .light-theme .close-settings,
+        .light-theme .slider-value,
+        .light-theme .link-action,
+        .light-theme .engine-btn {
+            color: var(--text-secondary-light);
+        }
+        
+        .light-theme .search-section,
+        .light-theme .link-card,
+        .light-theme .theme-switcher,
+        .light-theme .control-btn,
+        .light-theme .upload-btn,
+        .light-theme .settings-btn,
+        .light-theme .settings-panel {
+            background: var(--card-bg-light);
+            border: var(--card-border-light);
+        }
+        
+        .light-theme .search-input {
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--text-color-light);
+            border-color: rgba(108, 64, 201, 0.3);
+        }
+        
+        .light-theme .search-input:focus {
+            border-color: var(--primary-color-light);
+        }
+        
+        .light-theme .search-btn {
+            background: var(--primary-color-light);
+        }
+        
+        .light-theme .search-btn:hover {
+            background: var(--secondary-color-light);
+        }
+        
+        .light-theme .engine-btn.active {
+            background: rgba(108, 64, 201, 0.2);
+            color: var(--primary-color-light);
+        }
+        
+        .light-theme .engine-selector,
+        .light-theme .link-form,
+        .light-theme .link-item {
+            background: rgba(255, 255, 255, 0.5);
+            border-color: rgba(108, 64, 201, 0.2);
+        }
+        
+        .light-theme .theme-tab.active {
+            color: var(--primary-color-light);
+            border-bottom-color: var(--primary-color-light);
+        }
+        
+        .light-theme .slider {
+            background: rgba(108, 64, 201, 0.2);
+        }
+        
+        .light-theme .slider::-webkit-slider-thumb {
+            background: var(--primary-color-light);
+        }
+        
+        .light-theme .btn {
+            background: var(--primary-color-light);
+        }
+        
+        .light-theme .btn:hover {
+            background: var(--secondary-color-light);
+        }
+        
+        .light-theme .btn-secondary {
+            background: rgba(108, 64, 201, 0.2);
+            color: var(--primary-color-light);
+        }
+        
+        .light-theme .btn-secondary:hover {
+            background: rgba(108, 64, 201, 0.3);
+        }
+        
+        .light-theme .background-media {
+            opacity: 0.2;
+        }
+        
+        .light-theme h1 {
+            color: var(--primary-color-light);
+            text-shadow: 0 0 10px rgba(108, 64, 201, 0.3);
+        }
+        
+        .light-theme .link-title {
+            color: var(--primary-color-light);
+        }
+        
+        .toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--card-bg-dark);
+            color: var(--primary-color-dark);
+            padding: 10px 20px;
+            border-radius: 8px;
+            backdrop-filter: blur(var(--blur-intensity));
+            border: var(--card-border-dark);
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .light-theme .toast {
+            background: var(--card-bg-light);
+            color: var(--primary-color-light);
+            border: var(--card-border-light);
+        }
+        
+        .toast.show {
+            opacity: 1;
+        }
     </style>
 </head>
 <body>
     <div class="background-container">
-        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExb2VjN3l3a2Q5bXJ1cW5nZ2JodmJ6cXJ6a2Y2b2NqejJmdmR5eGx0YiZlcD12MV9pbnTlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ZXKZWB13sGZ6GN2mBk/giphy.gif" class="background-media" id="bg-gif" alt="Deltarune Background">
+        <!-- 默认显示GIF背景 -->
+        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExb2VjN3l3a2Q5bXJ1cW5nZ2JodmJ6cXJ6a2Y2b2NqejJmdmR5eGx0YiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ZXKZWB13sGZ6GN2mBk/giphy.gif" class="background-media" id="bg-gif" alt="Deltarune Background">
+        <!-- 视频背景元素 -->
         <video class="background-media" id="bg-video" loop muted style="display:none;"></video>
         <div class="overlay"></div>
     </div>
@@ -595,52 +828,12 @@
         </section>
 
         <section class="links-section" id="links-container">
-            <div class="link-card">
-                <div class="link-icon"><i class="fab fa-github"></i></div>
-                <h3 class="link-title">GitHub</h3>
-                <p class="link-desc">代码托管与版本控制平台，参与开源项目</p>
-                <a href="https://github.com" class="link-url" target="_blank">访问 GitHub</a>
-            </div>
-            
-            <div class="link-card">
-                <div class="link-icon"><i class="fab fa-stack-overflow"></i></div>
-                <h3 class="link-title">Stack Overflow</h3>
-                <p class="link-desc">程序员问答社区，解决编码难题</p>
-                <a href="https://stackoverflow.com" class="link-url" target="_blank">访问 Stack Overflow</a>
-            </div>
-            
-            <div class="link-card">
-                <div class="link-icon"><i class="fas fa-newspaper"></i></div>
-                <h3 class="link-title">技术博客</h3>
-                <p class="link-desc">个人技术博客，分享学习笔记与开发经验</p>
-                <a href="https://milestone56.pages.dev/" class="link-url" target="_blank">访问博客</a>
-            </div>
-            
-            <div class="link-card">
-                <div class="link-icon"><i class="fab fa-youtube"></i></div>
-                <h3 class="link-title">YouTube</h3>
-                <p class="link-desc">观看技术教程、会议演讲和开发者视频</p>
-                <a href="https://youtube.com" class="link-url" target="_blank">访问 YouTube</a>
-            </div>
-            
-            <div class="link-card">
-                <div class="link-icon"><i class="fab fa-twitter"></i></div>
-                <h3 class="link-title">Twitter</h3>
-                <p class="link-desc">关注技术领袖与开发者社区的最新动态</p>
-                <a href="https://twitter.com" class="link-url" target="_blank">访问 Twitter</a>
-            </div>
-            
-            <div class="link-card">
-                <div class="link-icon"><i class="fas fa-project-diagram"></i></div>
-                <h3 class="link-title">项目集</h3>
-                <p class="link-desc">个人项目展示与作品集页面</p>
-                <a href="https://milestone56.pages.dev/" class="link-url" target="_blank">查看项目</a>
-            </div>
+            <!-- 链接将由JavaScript动态生成 -->
         </section>
     </div>
 
     <footer>
-        <p>MILESTONE(MST)的 个人导航页 | 作者：MILESTONE(MST)</p>
+        <p>© 2023 MILESTONE(MST)的 个人导航页 | 灵感来自三角符文(Deltarune)</p>
     </footer>
 
     <div class="theme-switcher" id="theme-switcher">
@@ -651,6 +844,7 @@
         <i class="fas fa-cog"></i>
     </div>
 
+    <!-- 视频控制按钮 -->
     <div class="video-controls">
         <div class="control-btn" id="play-pause-btn">
             <i class="fas fa-pause"></i>
@@ -660,11 +854,13 @@
         </div>
     </div>
     
+    <!-- 上传按钮 -->
     <div class="upload-btn" id="upload-btn">
         <i class="fas fa-video"></i>
     </div>
     <input type="file" id="video-upload" accept="video/mp4,video/*">
     
+    <!-- 设置面板 -->
     <div class="settings-panel" id="settings-panel">
         <div class="settings-header">
             <h2 class="settings-title">设置</h2>
@@ -673,12 +869,35 @@
         
         <div class="settings-group">
             <label class="settings-label">主题颜色</label>
-            <div class="color-picker">
+            <div class="theme-tabs">
+                <button class="theme-tab active" data-theme="dark">暗色模式</button>
+                <button class="theme-tab" data-theme="light">亮色模式</button>
+            </div>
+            
+            <div class="color-picker" id="dark-colors">
                 <div class="color-option active" style="background: #a277ff;" data-color="#a277ff"></div>
                 <div class="color-option" style="background: #ff5e5e;" data-color="#ff5e5e"></div>
                 <div class="color-option" style="background: #5eb3ff;" data-color="#5eb3ff"></div>
                 <div class="color-option" style="background: #5effa8;" data-color="#5effa8"></div>
                 <div class="color-option" style="background: #ffdb5e;" data-color="#ffdb5e"></div>
+                <div class="color-option" style="background: #ff7ee5;" data-color="#ff7ee5"></div>
+                <div class="color-option" style="background: #7e7eff;" data-color="#7e7eff"></div>
+                <div class="color-option" style="background: #ff975e;" data-color="#ff975e"></div>
+                <div class="color-option" style="background: #5effe8;" data-color="#5effe8"></div>
+                <div class="color-option" style="background: #c5ff5e;" data-color="#c5ff5e"></div>
+            </div>
+            
+            <div class="color-picker" id="light-colors" style="display: none;">
+                <div class="color-option active" style="background: #6c40c9;" data-color="#6c40c9"></div>
+                <div class="color-option" style="background: #c94040;" data-color="#c94040"></div>
+                <div class="color-option" style="background: #408ac9;" data-color="#408ac9"></div>
+                <div class="color-option" style="background: #40c97c;" data-color="#40c97c"></div>
+                <div class="color-option" style="background: #c9a340;" data-color="#c9a340"></div>
+                <div class="color-option" style="background: #c940a3;" data-color="#c940a3"></div>
+                <div class="color-option" style="background: #4040c9;" data-color="#4040c9"></div>
+                <div class="color-option" style="background: #c96c40;" data-color="#c96c40"></div>
+                <div class="color-option" style="background: #40c9c9;" data-color="#40c9c9"></div>
+                <div class="color-option" style="background: #91c940;" data-color="#91c940"></div>
             </div>
         </div>
         
@@ -710,7 +929,9 @@
             
             <div class="custom-links">
                 <h3>我的链接</h3>
-                <div id="custom-links-list"></div>
+                <div id="custom-links-list">
+                    <!-- 自定义链接将在这里显示 -->
+                </div>
             </div>
         </div>
         
@@ -720,6 +941,7 @@
         </div>
     </div>
     
+    <!-- 提示信息 -->
     <div class="toast" id="toast"></div>
 
     <script>
@@ -771,8 +993,13 @@
             duckduckgo: "https://duckduckgo.com/?q="
         };
         
+        // 全局变量
         let currentEngine = "google";
-        let customLinks = [...defaultLinks];
+        let customLinks = [];
+        let currentTheme = "dark";
+        let darkThemeColor = "#a277ff";
+        let lightThemeColor = "#6c40c9";
+        let currentColorTab = "dark";
         
         // DOM元素
         const themeSwitcher = document.getElementById('theme-switcher');
@@ -788,7 +1015,11 @@
         const closeSettings = document.getElementById('close-settings');
         const blurSlider = document.getElementById('blur-slider');
         const blurValue = document.getElementById('blur-value');
-        const colorOptions = document.querySelectorAll('.color-option');
+        const themeTabs = document.querySelectorAll('.theme-tab');
+        const darkColors = document.getElementById('dark-colors');
+        const lightColors = document.getElementById('light-colors');
+        const darkColorOptions = darkColors.querySelectorAll('.color-option');
+        const lightColorOptions = lightColors.querySelectorAll('.color-option');
         const linksContainer = document.getElementById('links-container');
         const customLinksList = document.getElementById('custom-links-list');
         const addLinkBtn = document.getElementById('add-link-btn');
@@ -834,6 +1065,102 @@
             });
         }
         
+        // 渲染自定义链接列表
+        function renderCustomLinksList() {
+            customLinksList.innerHTML = '';
+            
+            customLinks.forEach((link, index) => {
+                const item = document.createElement('div');
+                item.className = 'link-item';
+                item.innerHTML = `
+                    <span>${link.name}</span>
+                    <div class="link-actions">
+                        <button class="link-action edit-link" data-index="${index}"><i class="fas fa-edit"></i></button>
+                        <button class="link-action delete-link" data-index="${index}"><i class="fas fa-trash"></i></button>
+                    </div>
+                `;
+                customLinksList.appendChild(item);
+            });
+            
+            // 添加事件监听
+            document.querySelectorAll('.delete-link').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const index = e.currentTarget.dataset.index;
+                    customLinks.splice(index, 1);
+                    renderCustomLinksList();
+                    renderLinks();
+                    showToast('链接已删除');
+                });
+            });
+            
+            document.querySelectorAll('.edit-link').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const index = e.currentTarget.dataset.index;
+                    const link = customLinks[index];
+                    
+                    document.getElementById('link-name').value = link.name;
+                    document.getElementById('link-desc').value = link.desc;
+                    document.getElementById('link-url').value = link.url;
+                    document.getElementById('link-icon').value = link.icon;
+                    
+                    customLinks.splice(index, 1);
+                    renderCustomLinksList();
+                    renderLinks();
+                    showToast('请修改链接信息并重新添加');
+                });
+            });
+        }
+        
+        // 更新主题颜色
+        function updateThemeColor(color, theme) {
+            if (theme === 'dark') {
+                darkThemeColor = color;
+                document.documentElement.style.setProperty('--primary-color-dark', color);
+                
+                // 计算并设置次要颜色（稍微暗一点）
+                const secondaryColor = adjustColorBrightness(color, -30);
+                document.documentElement.style.setProperty('--secondary-color-dark', secondaryColor);
+                
+                // 更新当前激活的颜色选项
+                darkColorOptions.forEach(option => {
+                    option.classList.remove('active');
+                    if (option.dataset.color === color) {
+                        option.classList.add('active');
+                    }
+                });
+            } else {
+                lightThemeColor = color;
+                document.documentElement.style.setProperty('--primary-color-light', color);
+                
+                // 计算并设置次要颜色（稍微暗一点）
+                const secondaryColor = adjustColorBrightness(color, -30);
+                document.documentElement.style.setProperty('--secondary-color-light', secondaryColor);
+                
+                // 更新当前激活的颜色选项
+                lightColorOptions.forEach(option => {
+                    option.classList.remove('active');
+                    if (option.dataset.color === color) {
+                        option.classList.add('active');
+                    }
+                });
+            }
+        }
+        
+        // 调整颜色亮度
+        function adjustColorBrightness(color, percent) {
+            const num = parseInt(color.slice(1), 16);
+            const R = (num >> 16) + percent;
+            const G = ((num >> 8) & 0x00FF) + percent;
+            const B = (num & 0x0000FF) + percent;
+            
+            return '#' + (
+                0x1000000 +
+                (R < 255 ? (R < 0 ? 0 : R) : 255) * 0x10000 +
+                (G < 255 ? (G < 0 ? 0 : G) : 255) * 0x100 +
+                (B < 255 ? (B < 0 ? 0 : B) : 255)
+            ).toString(16).slice(1);
+        }
+        
         // 初始化事件监听
         function initEventListeners() {
             // 搜索引擎切换
@@ -852,17 +1179,7 @@
             });
             
             // 主题切换
-            themeSwitcher.addEventListener('click', () => {
-                document.body.classList.toggle('light-theme');
-                const icon = themeSwitcher.querySelector('i');
-                if (document.body.classList.contains('light-theme')) {
-                    icon.classList.remove('fa-moon');
-                    icon.classList.add('fa-sun');
-                } else {
-                    icon.classList.remove('fa-sun');
-                    icon.classList.add('fa-moon');
-                }
-            });
+            themeSwitcher.addEventListener('click', toggleTheme);
             
             // 视频控制
             playPauseBtn.addEventListener('click', togglePlayPause);
@@ -882,14 +1199,33 @@
             // 模糊度滑块
             blurSlider.addEventListener('input', updateBlur);
             
+            // 主题标签切换
+            themeTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    themeTabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    currentColorTab = tab.dataset.theme;
+                    
+                    if (currentColorTab === 'dark') {
+                        darkColors.style.display = 'grid';
+                        lightColors.style.display = 'none';
+                    } else {
+                        darkColors.style.display = 'none';
+                        lightColors.style.display = 'grid';
+                    }
+                });
+            });
+            
             // 颜色选择
-            colorOptions.forEach(option => {
+            darkColorOptions.forEach(option => {
                 option.addEventListener('click', (e) => {
-                    document.querySelectorAll('.color-option').forEach(opt => {
-                        opt.classList.remove('active');
-                    });
-                    e.target.classList.add('active');
-                    updateThemeColor(e.target.dataset.color);
+                    updateThemeColor(e.target.dataset.color, 'dark');
+                });
+            });
+            
+            lightColorOptions.forEach(option => {
+                option.addEventListener('click', (e) => {
+                    updateThemeColor(e.target.dataset.color, 'light');
                 });
             });
             
@@ -909,6 +1245,22 @@
             if (query) {
                 window.open(searchEngines[currentEngine] + encodeURIComponent(query), '_blank');
             }
+        }
+        
+        // 切换明暗主题
+        function toggleTheme() {
+            if (currentTheme === 'dark') {
+                document.body.classList.add('light-theme');
+                currentTheme = 'light';
+                themeSwitcher.innerHTML = '<i class="fas fa-sun"></i>';
+            } else {
+                document.body.classList.remove('light-theme');
+                currentTheme = 'dark';
+                themeSwitcher.innerHTML = '<i class="fas fa-moon"></i>';
+            }
+            
+            // 保存主题偏好
+            localStorage.setItem('theme', currentTheme);
         }
         
         // 视频播放/暂停
@@ -979,30 +1331,6 @@
             document.documentElement.style.setProperty('--blur-intensity', value + 'px');
         }
         
-        // 更新主题颜色
-        function updateThemeColor(color) {
-            document.documentElement.style.setProperty('--primary-color', color);
-            
-            // 计算并设置次要颜色（稍微暗一点）
-            const secondaryColor = adjustColorBrightness(color, -30);
-            document.documentElement.style.setProperty('--secondary-color', secondaryColor);
-        }
-        
-        // 调整颜色亮度
-        function adjustColorBrightness(color, percent) {
-            const num = parseInt(color.slice(1), 16);
-            const R = (num >> 16) + percent;
-            const G = ((num >> 8) & 0x00FF) + percent;
-            const B = (num & 0x0000FF) + percent;
-            
-            return '#' + (
-                0x1000000 +
-                (R < 255 ? (R < 0 ? 0 : R) : 255) * 0x10000 +
-                (G < 255 ? (G < 0 ? 0 : G) : 255) * 0x100 +
-                (B < 255 ? (B < 0 ? 0 : B) : 255)
-            ).toString(16).slice(1);
-        }
-        
         // 添加自定义链接
         function addCustomLink() {
             const name = document.getElementById('link-name').value.trim();
@@ -1022,6 +1350,7 @@
                 icon: icon || 'fas fa-link'
             });
             
+            renderCustomLinksList();
             renderLinks();
             
             // 清空表单
@@ -1037,8 +1366,7 @@
         function resetSettings() {
             if (confirm('确定要恢复默认设置吗？这将清除所有自定义设置。')) {
                 localStorage.removeItem('navSettings');
-                customLinks = [...defaultLinks];
-                renderLinks();
+                loadSettings();
                 showToast('已恢复默认设置');
             }
         }
@@ -1046,8 +1374,9 @@
         // 保存设置
         function saveSettings() {
             const settings = {
-                theme: document.body.classList.contains('light-theme') ? 'light' : 'dark',
-                primaryColor: getComputedStyle(document.documentElement).getPropertyValue('--primary-color').trim(),
+                theme: currentTheme,
+                darkThemeColor: darkThemeColor,
+                lightThemeColor: lightThemeColor,
                 blurIntensity: blurSlider.value,
                 customLinks: customLinks
             };
@@ -1066,21 +1395,21 @@
                 // 应用主题
                 if (settings.theme === 'light') {
                     document.body.classList.add('light-theme');
-                    themeSwitcher.querySelector('i').classList.remove('fa-moon');
-                    themeSwitcher.querySelector('i').classList.add('fa-sun');
+                    themeSwitcher.innerHTML = '<i class="fas fa-sun"></i>';
+                    currentTheme = 'light';
+                } else {
+                    document.body.classList.remove('light-theme');
+                    themeSwitcher.innerHTML = '<i class="fas fa-moon"></i>';
+                    currentTheme = 'dark';
                 }
                 
                 // 应用主题色
-                if (settings.primaryColor) {
-                    updateThemeColor(settings.primaryColor);
-                    
-                    // 激活对应的颜色选项
-                    document.querySelectorAll('.color-option').forEach(option => {
-                        option.classList.remove('active');
-                        if (option.dataset.color === settings.primaryColor) {
-                            option.classList.add('active');
-                        }
-                    });
+                if (settings.darkThemeColor) {
+                    updateThemeColor(settings.darkThemeColor, 'dark');
+                }
+                
+                if (settings.lightThemeColor) {
+                    updateThemeColor(settings.lightThemeColor, 'light');
                 }
                 
                 // 应用模糊度
@@ -1092,10 +1421,15 @@
                 // 应用自定义链接
                 if (settings.customLinks && settings.customLinks.length > 0) {
                     customLinks = settings.customLinks;
+                } else {
+                    customLinks = [...defaultLinks];
                 }
+            } else {
+                customLinks = [...defaultLinks];
             }
             
             renderLinks();
+            renderCustomLinksList();
         }
         
         // 初始化
@@ -1108,4 +1442,3 @@
     </script>
 </body>
 </html>
-

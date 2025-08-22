@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MILESTONE MST 的个人导航页</title>
+    <!-- 本地化Font Awesome -->
+    <link rel="stylesheet" href="https://milestone56.github.io/milestone/css/font-awesome.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --primary-color-dark: #a277ff;
+            --secondary-color-dark: #6c40c9;
+            --bg-color-dark: #0d0d12;
+            --card-bg-dark: rgba(26, 22, 48, 0.7);
+            --text-color-dark: #e6e6e6;
+            --text-secondary-dark: #b3b3cc;
+            --card-border-dark: 1px solid rgba(162, 119, 255, 0.2);
+            
+            --primary-color-light: #6c40c9;
+            --secondary-color-light: #4d267e;
+            --bg-color-light: #f5f5f7;
+            --card-bg-light: rgba(255, 255, 255, 0.8);
+            --text-color-light: #33334c;
+            --text-secondary-light: #55556e;
+            --card-border-light: 1px solid rgba(108, 64, 201, 0.3);
+            
+            --blur-intensity: 10px;
+        }
+        
+        body {
+            background-color: var(--bg-color-dark);
+            color: var(--text-color-dark);
+            min-height: 100vh;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        
+        .background-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .background-media {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.35;
+            transition: opacity 0.5s ease;
+        }
+        
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(13, 13, 18, 0.8), rgba(44, 16, 64, 0.7));
+            backdrop-filter: blur(var(--blur-intensity));
+            transition: backdrop-filter 0.3s ease;
+        }
+        
+        .light-theme .overlay {
+            background: linear-gradient(to bottom, rgba(245, 245, 247, 0.8), rgba(200, 180, 240, 0.7));
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            z-index: 1;
+            width: 100%;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            padding-top: 1.5rem;
+            animation: fadeIn 1s ease-out;
+        }
+        
+        .author {
+            font-size: 0.9rem;
+            color: var(--primary-color-dark);
+            margin-bottom: 0.5rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(162, 119, 255, 0.5);
+        }
+        
+        .description {
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+            color: var(--text-secondary-dark);
+        }
+        
+        .search-section {
+            background: var(--card-bg-dark);
+            backdrop-filter: blur(var(--blur-intensity));
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 8px 32px rgba(13, 13, 18, 0.5);
+            border: var(--card-border-dark);
+            animation: slideUp 1s ease-out;
+        }
+        
+        .search-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .search-title {
+            font-size: 1.5rem;
+            color: var(--primary-color-dark);
+        }
+        
+        .engine-selector {
+            display: flex;
+            background: rgba(13, 13, 18, 0.5);
+            border-radius: 12px;
+            padding: 0.25rem;
+            border: var(--card-border-dark);
+        }
+        
+        .engine-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            border: none;
+            background: none;
+            color: var(--text-secondary-dark);
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .engine-btn.active {
+            background: rgba(162, 119, 255, 0.2);
+            color: var(--primary-color-dark);
+        }
+        
+        .search-box {
+            display: flex;
+            height: 50px;
+        }
+        
+        .search-input {
+            flex: 1;
+            padding: 0 1.5rem;
+            background: rgba(13, 13, 18, 0.5);
+            border: 2px solid rgba(162, 119, 255, 0.3);
+            border-right: none;
+            border-radius: 12px 0 0 12px;
+            color: var(--text-color-dark);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-color-dark);
+        }
+        
+        .search-btn {
+            width: 60px;
+            background: var(--primary-color-dark);
+            border: none;
+            border-radius: 0 12px 12px 0;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .search-btn:hover {
+            background: var(--secondary-color-dark);
+        }
+        
+        .links-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+            animation: slideUp 1.2s ease-out;
+        }
+        
+        .link-card {
+            background: var(--card-bg-dark);
+            backdrop-filter: blur(var(--blur-intensity));
+            border-radius: 16px;
+            padding: 1.5rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: var(--card-border-dark);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        
+        .link-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(13, 13, 18, 0.6);
+            border-color: rgba(162, 119, 255, 0.4);
+        }
+        
+        .link-icon {
+            font-size: 1.8rem;
+            color: var(--primary-color-dark);
+            margin-bottom: 1rem;
+        }
+        
+        .link-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: #ffffff;
+        }
+        
+        .link-desc {
+            color: var(--text-secondary-dark);
+            margin-bottom: 1.2rem;
+            line-height: 1.5;
+            flex-grow: 1;
+        }
+        
+        .link-url {
+            display: inline-block;
+            color: var(--primary-color-dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        .link-url:hover {
+            color: var(--secondary-color-dark);
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: auto;
+            padding: 1.5rem;
+            color: var(--text-secondary-dark);
+            font-size: 0.9rem;
+            animation: fadeIn 1.5s ease-out;
+        }
+        
+        .theme-switcher {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--card-bg-dark);
+            backdrop-filter: blur(var(--blur-intensity));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: var(--card-border-dark);
+            color: var(--primary-color-dark);
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+        
+        .theme-switcher:hover {
+            transform: rotate(30deg);
+            border-color: rgba(162, 119, 255, 0.4);
+        }
+        
+        .video-controls {
+            position: fixed;
+            bottom: 2rem;
+            left: 2rem;
+            display: flex;
+            gap: 0.5rem;
+            z-index: 100;
+        }
+        
+        .control-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--card-bg-dark);
+            backdrop-filter: blur(var(--blur-intensity));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: var(--card-border-dark);
+            color: var(--primary-color-dark);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .control-btn:hover {
+            background: rgba(162, 119, 255, 0.2);
+            transform: scale(1.1);
+        }
+        
+        .upload-btn {
+            position: fixed;
+            bottom: 2rem;
+            left: 5.5rem;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--card-bg-dark);
+            backdrop-filter: blur(var(--blur-intensity));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: var(--card-border-dark);
+            color: var(--primary-color-dark);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+        
+        .upload-btn:hover {
+            background: rgba(162, 119, 255, 0.2);
+            transform: scale(1.1);
+        }
+        
+        .settings-btn {
+            position: fixed;
+            bottom: 2rem;
+            right: 5.5rem;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--card-bg-dark);
+            backdrop-filter: blur(var(--blur-intensity));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: var(--card-border-dark);
+            color: var(--primary-color-dark);
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+        
+        .settings-btn:hover {
+            transform: rotate(30deg);
+            border-color: rgba(162, 119, 255, 0.4);
+        }
+        
+        #video-upload {
+            display: none;
+        }
+        
+        /* 设置面板 */
+        .settings-panel {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 380px;
+            height: 100vh;
+            background: var(--card-bg-dark);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            padding: 2rem;
+            overflow-y: auto;
+            transition: right 0.4s ease;
+            box-shadow: -5px 0 25px rgba(0, 0, 0, 0.3);
+            border-left: var(--card-border-dark);
+        }
+        
+        .settings-panel.active {
+            right: 0;
+        }
+        
+        .settings-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(162, 119, 255, 0.2);
+        }
+        
+        .settings-title {
+            font-size: 1.5rem;
+            color: var(--primary-color-dark);
+        }
+        
+        .close-settings {
+            background: none;
+            border: none;
+            color: var(--text-secondary-dark);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        
+        .close-settings:hover {
+            color: var(--primary-color-dark);
+        }
+        
+        .settings-group {
+            margin-bottom: 2rem;
+        }
+        
+        .settings-label {
+            display: block;
+            margin-bottom: 0.8rem;
+            color: var(--primary-color-dark);
+            font-weight: 500;
+        }
+        
+        .theme-tabs {
+            display: flex;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid rgba(162, 119, 255, 0.2);
+        }
+        
+        .theme-tab {
+            padding: 0.5rem 1rem;
+            background: none;
+            border: none;
+            color: var(--text-secondary-dark);
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .theme-tab.active {
+            color: var(--primary-color-dark);
+            border-bottom: 2px solid var(--primary-color-dark);
+        }
+        
+        .color-picker {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .color-option {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: transform 0.3s ease;
+        }
+        
+        .color-option.active {
+            border-color: white;
+            transform: scale(1.1);
+        }
+        
+        .slider-container {
+            margin-bottom: 1.5rem;
+        }
+        
+        .slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: rgba(162, 119, 255, 0.2);
+            outline: none;
+        }
+        
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--primary-color-dark);
+            cursor: pointer;
+        }
+        
+        .slider-value {
+            text-align: right;
+            color: var(--text-secondary-dark);
+            font-size: 0.9rem;
+        }
+        
+        .link-form {
+            background: rgba(13, 13, 18, 0.3);
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 0.8rem;
+            border-radius: 8px;
+            border: 1px solid rgba(162, 119, 255, 0.3);
+            background: rgba(13, 13, 18, 0.5);
+            color: var(--text-color-dark);
+            font-size: 0.9rem;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-color-dark);
+        }
+        
+        .btn {
+            padding: 0.7rem 1.5rem;
+            border-radius: 8px;
+            border: none;
+            background: var(--primary-color-dark);
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        
+        .btn:hover {
+            background: var(--secondary-color-dark);
+        }
+        
+        .btn-secondary {
+            background: rgba(162, 119, 255, 0.2);
+            color: var(--primary-color-dark);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(162, 119, 255, 0.3);
+        }
+        
+        .custom-links {
+            margin-top: 1.5rem;
+        }
+        
+        .link-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem;
+            background: rgba(13, 13, 18, 0.3);
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+        }
+        
+        .link-item span {
+            flex: 1;
+            margin-right: 1rem;
+        }
+        
+        .link-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .link-action {
+            background: none;
+            border: none;
+            color: var(--text-secondary-dark);
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        
+        .link-action:hover {
+            color: var(--primary-color-dark);
+        }
+        
+        /* 动画效果 */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .search-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .engine-selector {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .links-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .video-controls {
+                bottom: 7rem;
+                left: 1rem;
+            }
+            
+            .upload-btn {
+                bottom: 7rem;
+                left: 4.5rem;
+            }
+            
+            .settings-btn {
+                bottom: 7rem;
+                right: 1rem;
+            }
+            
+            .theme-switcher {
+                bottom: 7rem;
+                right: 4.5rem;
+            }
+            
+            .settings-panel {
+                width: 100%;
+                right: -100%;
+            }
+        }
+        
+        /* 明亮主题 */
+        .light-theme {
+            background-color: var(--bg-color-light);
+            color: var(--text-color-light);
+        }
+        
+        .light-theme .author,
+        .light-theme .search-title,
+        .light-theme .link-icon,
+        .light-theme .link-url,
+        .light-theme .settings-title,
+        .light-theme .settings-label,
+        .light-theme .close-settings:hover,
+        .light-theme .link-action:hover {
+            color: var(--primary-color-light);
+        }
+        
+        .light-theme .description,
+        .light-theme .link-desc,
+        .light-theme footer,
+        .light-theme .close-settings,
+        .light-theme .slider-value,
+        .light-theme .link-action,
+        .light-theme .engine-btn {
+            color: var(--text-secondary-light);
+        }
+        
+        .light-theme .search-section,
+        .light-theme .link-card,
+        .light-theme .theme-switcher,
+        .light-theme .control-btn,
+        .light-theme .upload-btn,
+        .light-theme .settings-btn,
+        .light-theme .settings-panel {
+            background: var(--card-bg-light);
+            border: var(--card-border-light);
+        }
+        
+        .light-theme .search-input {
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--text-color-light);
+            border-color: rgba(108, 64, 201, 0.3);
+        }
+        
+        .light-theme .search-input:focus {
+            border-color: var(--primary-color-light);
+        }
+        
+        .light-theme .search-btn {
+            background: var(--primary-color-light);
+        }
+        
+        .light-theme .search-btn:hover {
+            background: var(--secondary-color-light);
+        }
+        
+        .light-theme .engine-btn.active {
+            background: rgba(108, 64, 201, 0.2);
+            color: var(--primary-color-light);
+        }
+        
+        .light-theme .engine-selector,
+        .light-theme .link-form,
+        .light-theme .link-item {
+            background: rgba(255, 255, 255, 0.5);
+            border-color: rgba(108, 64, 201, 0.2);
+        }
+        
+        .light-theme .theme-tab.active {
+            color: var(--primary-color-light);
+            border-bottom-color: var(--primary-color-light);
+        }
+        
+        .light-theme .slider {
+            background: rgba(108, 64, 201, 0.2);
+        }
+        
+        .light-theme .slider::-webkit-slider-thumb {
+            background: var(--primary-color-light);
+        }
+        
+        .light-theme .btn {
+            background: var(--primary-color-light);
+        }
+        
+        .light-theme .btn:hover {
+            background: var(--secondary-color-light);
+        }
+        
+        .light-theme .btn-secondary {
+            background: rgba(108, 64, 201, 0.2);
+            color: var(--primary-color-light);
+        }
+        
+        .light-theme .btn-secondary:hover {
+            background: rgba(108, 64, 201, 0.3);
+        }
+        
+        .light-theme .background-media {
+            opacity: 0.2;
+        }
+        
+        .light-theme h1 {
+            color: var(--primary-color-light);
+            text-shadow: 0 0 10px rgba(108, 64, 201, 0.3);
+        }
+        
+        .light-theme .link-title {
+            color: var(--primary-color-light);
+        }
+        
+        .toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--card-bg-dark);
+            color: var(--primary-color-dark);
+            padding: 10px 20px;
+            border-radius: 8px;
+            backdrop-filter: blur(var(--blur-intensity));
+            border: var(--card-border-dark);
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .light-theme .toast {
+            background: var(--card-bg-light);
+            color: var(--primary-color-light);
+            border: var(--card-border-light);
+        }
+        
+        .toast.show {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="background-container">
+        <!-- 使用本地GIF背景 -->
+        <img src="https://milestone56.github.io/milestone/images/deltarune-bg.gif" class="background-media" id="bg-gif" alt="Deltarune Background">
+        <!-- 视频背景元素 -->
+        <video class="background-media" id="bg-video" loop muted style="display:none;"></video>
+        <div class="overlay"></div>
+    </div>
+
+    <div class="container">
+        <header>
+            <div class="author">Created by MILESTONE(MST)</div>
+            <h1>个人导航中心</h1>
+            <p class="description">简洁高效的起始页，集成多搜索引擎与常用资源链接</p>
+        </header>
+
+        <section class="search-section">
+            <div class="search-header">
+                <h2 class="search-title">全网搜索</h2>
+                <div class="engine-selector">
+                    <button class="engine-btn active" data-engine="google">Google</button>
+                    <button class="engine-btn" data-engine="bing">Bing</button>
+                    <button class="engine-btn" data-engine="baidu">百度</button>
+                    <button class="engine-btn" data-engine="duckduckgo">DuckDuckGo</button>
+                </div>
+            </div>
+            <div class="search-box">
+                <input type="text" class="search-input" placeholder="输入关键词搜索..." id="search-input">
+                <button class="search-btn" id="search-btn"><i class="fas fa-search"></i></button>
+            </div>
+        </section>
+
+        <section class="links-section" id="links-container">
+            <!-- 链接将由JavaScript动态生成 -->
+        </section>
+    </div>
+
+    <footer>
+        <p>© 2023 MILESTONE(MST)的 个人导航页 | 灵感来自三角符文(Deltarune)</p>
+    </footer>
+
+    <div class="theme-switcher" id="theme-switcher">
+        <i class="fas fa-moon"></i>
+    </div>
+
+    <div class="settings-btn" id="settings-btn">
+        <i class="fas fa-cog"></i>
+    </div>
+
+    <!-- 视频控制按钮 -->
+    <div class="video-controls">
+        <div class="control-btn" id="play-pause-btn">
+            <i class="fas fa-pause"></i>
+        </div>
+        <div class="control-btn" id="mute-unmute-btn">
+            <i class="fas fa-volume-up"></i>
+        </div>
+    </div>
+    
+    <!-- 上传按钮 -->
+    <div class="upload-btn" id="upload-btn">
+        <i class="fas fa-video"></i>
+    </div>
+    <input type="file" id="video-upload" accept="video/mp4,video/*">
+    
+    <!-- 设置面板 -->
+    <div class="settings-panel" id="settings-panel">
+        <div class="settings-header">
+            <h2 class="settings-title">设置</h2>
+            <button class="close-settings" id="close-settings"><i class="fas fa-times"></i></button>
+        </div>
+        
+        <div class="settings-group">
+            <label class="settings-label">主题颜色</label>
+            <div class="theme-tabs">
+                <button class="theme-tab active" data-theme="dark">暗色模式</button>
+                <button class="theme-tab" data-theme="light">亮色模式</button>
+            </div>
+            
+            <div class="color-picker" id="dark-colors">
+                <div class="color-option active" style="background: #a277ff;" data-color="#a277ff"></div>
+                <div class="color-option" style="background: #ff5e5e;" data-color="#ff5e5e"></div>
+                <div class="color-option" style="background: #5eb3ff;" data-color="#5eb3ff"></div>
+                <div class="color-option" style="background: #5effa8;" data-color="#5effa8"></div>
+                <div class="color-option" style="background: #ffdb5e;" data-color="#ffdb5e"></div>
+                <div class="color-option" style="background: #ff7ee5;" data-color="#ff7ee5"></div>
+                <div class="color-option" style="background: #7e7eff;" data-color="#7e7eff"></div>
+                <div class="color-option" style="background: #ff975e;" data-color="#ff975e"></div>
+                <div class="color-option" style="background: #5effe8;" data-color="#5effe8"></div>
+                <div class="color-option" style="background: #c5ff5e;" data-color="#c5ff5e"></div>
+            </div>
+            
+            <div class="color-picker" id="light-colors" style="display: none;">
+                <div class="color-option active" style="background: #6c40c9;" data-color="#6c40c9"></div>
+                <div class="color-option" style="background: #c94040;" data-color="#c94040"></div>
+                <div class="color-option" style="background: #408ac9;" data-color="#408ac9"></div>
+                <div class="color-option" style="background: #40c97c;" data-color="#40c97c"></div>
+                <div class="color-option" style="background: #c9a340;" data-color="#c9a340"></div>
+                <div class="color-option" style="background: #c940a3;" data-color="#c940a3"></div>
+                <div class="color-option" style="background: #4040c9;" data-color="#4040c9"></div>
+                <div class="color-option" style="background: #c96c40;" data-color="#c96c40"></div>
+                <div class="color-option" style="background: #40c9c9;" data-color="#40c9c9"></div>
+                <div class="color-option" style="background: #91c940;" data-color="#91c940"></div>
+            </div>
+        </div>
+        
+        <div class="settings-group">
+            <label class="settings-label">背景模糊度</label>
+            <div class="slider-container">
+                <input type="range" min="0" max="20" value="10" class="slider" id="blur-slider">
+                <div class="slider-value" id="blur-value">10px</div>
+            </div>
+        </div>
+        
+        <div class="settings-group">
+            <label class="settings-label">自定义链接</label>
+            <div class="link-form">
+                <div class="form-group">
+                    <input type="text" class="form-input" id="link-name" placeholder="链接名称">
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-input" id="link-desc" placeholder="链接描述">
+                </div>
+                <div class="form-group">
+                    <input type="url" class="form-input" id="link-url" placeholder="链接URL">
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-input" id="link-icon" placeholder="图标类名 (如: fab fa-github)">
+                </div>
+                <button class="btn" id="add-link-btn">添加链接</button>
+            </div>
+            
+            <div class="custom-links">
+                <h3>我的链接</h3>
+                <div id="custom-links-list">
+                    <!-- 自定义链接将在这里显示 -->
+                </div>
+            </div>
+        </div>
+        
+        <div class="settings-group">
+            <button class="btn btn-secondary" id="reset-settings">恢复默认设置</button>
+            <button class="btn" id="save-settings">保存设置</button>
+        </div>
+    </div>
+    
+    <!-- 提示信息 -->
+    <div class="toast" id="toast"></div>
+
+    <!-- 本地化JavaScript -->
+    <script src="https://milestone56.github.io/milestone/js/navigation.js"></script>
+</body>
+</html>
